@@ -167,6 +167,7 @@
             this.LisaLisa_Katbutt.TabIndex = 12;
             this.LisaLisa_Katbutt.Text = "Lisa";
             this.LisaLisa_Katbutt.UseVisualStyleBackColor = true;
+            this.LisaLisa_Katbutt.Click += new System.EventHandler(this.LisaLisa_Katbutt_Click);
             // 
             // Uuenda_Katbutt
             // 

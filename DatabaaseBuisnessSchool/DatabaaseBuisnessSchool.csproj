@@ -97,10 +97,10 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="AppData\Tooded_DB.mdf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="AppData\Tooded_DB_log.ldf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <DependentUpon>Tooded_DB.mdf</DependentUpon>
     </Content>
   </ItemGroup>

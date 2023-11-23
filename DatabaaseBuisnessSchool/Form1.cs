@@ -5,6 +5,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -28,7 +29,7 @@ namespace DatabaaseBuisnessSchool
         {
             connect.Open();
             DataTable dt_toode = new DataTable();
-            adapter_toode = new SqlDataAdapter("SELECT * FROM Toode", connect);
+            adapter_toode = new SqlDataAdapter("SELECT * FROM Toode INNER JOIN Kategooriad on Toode.Kategooriad=Kategooriad.Id", connect);
             adapter_toode.Fill(dt_toode);
             dataGridView1.DataSource= dt_toode;
             connect.Close();
@@ -59,6 +60,32 @@ namespace DatabaaseBuisnessSchool
             }
             connect.Close();
         }
+
+        private void LisaLisa_Katbutt_Click(object sender, EventArgs e)
+        {
+            if (Toode_Box.Text.Trim() != string.Empty && Kogus_Box.Text.Trim() != string.Empty && Hind_Box.Text.Trim() != string.Empty && Kat_Box.SelectedItem != null)
+            {
+                try
+                {
+                    connect.Open();
+                    command = new SqlCommand("INSERT INTO Toode (Toodenimetus, Kogus, Hind, Pilt, Kategooriad) VALUES (@toode, @kogus, @hind, @pilt, @kat)", connect);
+                    command.Parameters.AddWithValue("@toode", Toode_Box.Text);
+                    command.Parameters.AddWithValue("@kogus", Kogus_Box.Text);
+                    command.Parameters.AddWithValue("@hind", Hind_Box.Text);
+                    command.Parameters.AddWithValue("@pilt", Toode_Box.Text + ".jpg");
+                    command.Parameters.AddWithValue("@kat", Kat_Box.SelectedIndex + 1);//Id?
+
+                    command.ExecuteNonQuery();
+                    connect.Close();
+                    NaitaAndmed();
+                }
+                catch (Exception)
+                {
+                    MessageBox.Show("Andmebaasiga viga!");
+                }
+            }
+        }
+
 
         private void Lisa_Katbutt_Click(object sender, EventArgs e)
         {
