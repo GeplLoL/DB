@@ -147,6 +147,7 @@
             this.Kustuta_Katbutt.TabIndex = 10;
             this.Kustuta_Katbutt.Text = "Kustuta Kategooria";
             this.Kustuta_Katbutt.UseVisualStyleBackColor = true;
+            this.Kustuta_Katbutt.Click += new System.EventHandler(this.Kustuta_Katbutt_Click);
             // 
             // Otsi_Katbutt
             // 
@@ -178,6 +179,7 @@
             this.Uuenda_Katbutt.TabIndex = 13;
             this.Uuenda_Katbutt.Text = "Uuenda ";
             this.Uuenda_Katbutt.UseVisualStyleBackColor = true;
+            this.Uuenda_Katbutt.Click += new System.EventHandler(this.Uuenda_Katbutt_Click);
             // 
             // KustutaKustuta_Katbutt
             // 
