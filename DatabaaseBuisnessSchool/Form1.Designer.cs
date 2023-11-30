@@ -43,7 +43,9 @@
             this.LisaLisa_Katbutt = new System.Windows.Forms.Button();
             this.Uuenda_Katbutt = new System.Windows.Forms.Button();
             this.KustutaKustuta_Katbutt = new System.Windows.Forms.Button();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // dataGridView1
@@ -53,6 +55,8 @@
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.Size = new System.Drawing.Size(602, 186);
             this.dataGridView1.TabIndex = 0;
+            this.dataGridView1.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellClick);
+            this.dataGridView1.RowHeaderMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridView1_RowHeaderMouseClick);
             // 
             // Kat_Box
             // 
@@ -158,6 +162,7 @@
             this.Otsi_Katbutt.TabIndex = 11;
             this.Otsi_Katbutt.Text = "Otsi Fail";
             this.Otsi_Katbutt.UseVisualStyleBackColor = true;
+            this.Otsi_Katbutt.Click += new System.EventHandler(this.Otsi_Katbutt_Click);
             // 
             // LisaLisa_Katbutt
             // 
@@ -191,11 +196,20 @@
             this.KustutaKustuta_Katbutt.Text = "Kustuta";
             this.KustutaKustuta_Katbutt.UseVisualStyleBackColor = true;
             // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Location = new System.Drawing.Point(315, 29);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(299, 121);
+            this.pictureBox1.TabIndex = 15;
+            this.pictureBox1.TabStop = false;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(641, 415);
+            this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.KustutaKustuta_Katbutt);
             this.Controls.Add(this.Uuenda_Katbutt);
             this.Controls.Add(this.LisaLisa_Katbutt);
@@ -214,6 +228,7 @@
             this.Name = "Form1";
             this.Text = "Form1";
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -236,6 +251,7 @@
         private System.Windows.Forms.Button LisaLisa_Katbutt;
         private System.Windows.Forms.Button Uuenda_Katbutt;
         private System.Windows.Forms.Button KustutaKustuta_Katbutt;
+        private System.Windows.Forms.PictureBox pictureBox1;
     }
 }
 
