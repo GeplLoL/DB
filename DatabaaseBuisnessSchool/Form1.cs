@@ -20,6 +20,7 @@ namespace DatabaaseBuisnessSchool
         SqlConnection connect = new SqlConnection(@"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\AppData\Tooded_DB.mdf;Integrated Security=True");
         SqlDataAdapter adapter_toode, adapter_kategooria;
         SqlCommand command;
+        ComboBox combo_kat;
         public Form1()
         {
             InitializeComponent();
@@ -30,21 +31,26 @@ namespace DatabaaseBuisnessSchool
         {
             connect.Open();
             DataTable dt_toode = new DataTable();
-            adapter_toode = new SqlDataAdapter("SELECT Toode.Id, Toode.Toodenimetus, Toode.Kogus, Toode.Hind, Toode.Pilt, Kategooriad.Kategooria_nimetus FROM Toode INNER JOIN Kategooriad ON Toode.Kategooriad=Kategooriad.Id", connect);
+            adapter_toode = new SqlDataAdapter("SELECT T.Id, T.Toodenimetus, T.Kogus, T.Hind, T.Pilt, K.Kategooria_nimetus AS Kategooria FROM Toode T INNER JOIN Kategooriad K ON T.Kategooriad=K.Id", connect);
             adapter_toode.Fill(dt_toode);
+            dataGridView1.Columns.Clear();
             dataGridView1.DataSource= dt_toode;
-            DataGridViewComboBoxColumn dgvcb = new DataGridViewComboBoxColumn();
+            DataGridViewComboBoxColumn combo_kat = new DataGridViewComboBoxColumn();
+            combo_kat.HeaderText = "Kategooria";
+            combo_kat.Name = "KategooriaColumn";
+            combo_kat.DataPropertyName = "Kategooria";
+            HashSet<string> uniqueCategories = new HashSet<string>();
             foreach (DataRow item in dt_toode.Rows)
             {
-                if (!dgvcb.Items.Contains(item["Kategooria_nimetus"]))
-                    dgvcb.Items.Add(item["Kategooria_nimetus"]);
+                string category = item["Kategooria"].ToString();
+                if (!uniqueCategories.Contains(category))
+                {
+                    uniqueCategories.Add(category);
+                    combo_kat.Items.Add(category);
+                }
             }
-            foreach (DataRow item in dt_toode.Rows)
-            {
-                dt_toode.Rows.Add(item["Toodenimetus"], item["Kogus"], item["Hind"], item["Pilt"]);
-            }
-            dataGridView1.DataSource = dt_toode;
-            dataGridView1.Columns.Add(dgvcb);
+            dataGridView1.Columns.Add(combo_kat);
+            dataGridView1.Columns["Kategooria"].Visible= false;
             connect.Close();
         }
         public void NaitaKategooria()
@@ -71,6 +77,11 @@ namespace DatabaaseBuisnessSchool
                 Hind_Box.Items.Add(item["Hind"]);
             }
             connect.Close();
+        }
+        private void vivodExtension(object sender, EventArgs e)
+        {
+            string myFilePath = @"C:\MyFile.jpg";
+            string ext = Path.GetExtension(myFilePath);
         }
         private void LisaLisa_Katbutt_Click(object sender, EventArgs e)
         {
@@ -120,7 +131,38 @@ namespace DatabaaseBuisnessSchool
 
         private void Uuenda_Katbutt_Click(object sender, EventArgs e)
         {
-            NaitaKategooria();
+            if (dataGridView1.SelectedRows.Count > 0)
+            {
+                int rowIndex = dataGridView1.SelectedRows[0].Index;
+                Id = Convert.ToInt32(dataGridView1.Rows[rowIndex].Cells["Id"].Value);
+                string newToode = Toode_Box.Text;
+                int newKogus = Convert.ToInt32(Kogus_Box.Text);
+                decimal newHind = Convert.ToDecimal(Hind_Box.Text);
+                try
+                {
+                    connect.Open();
+                    command = new SqlCommand("UPDATE Toode SET Toodenimetus=@toode,Kogus=@kogus,Hind=@hind WHERE Id=@id", connect);
+                    command.Parameters.AddWithValue("@id", Id);
+                    command.Parameters.AddWithValue("@toode", newToode);
+                    command.Parameters.AddWithValue("@kogus", newKogus);
+                    command.Parameters.AddWithValue("@hind", newHind);
+                    int rowsAffected = command.ExecuteNonQuery();
+                    connect.Close();
+
+                    if (rowsAffected > 0)
+                    {
+                        NaitaAndmed();
+                        MessageBox.Show("Andmed tabelis Tooded on edukalt uuendatud");
+                    }
+
+
+                }
+                catch (Exception ex)
+                {
+
+                    MessageBox.Show("Viga andmete uuendamisel: " + ex.Message);
+                }
+            }
         }
         string kat;
         SaveFileDialog save;
@@ -158,13 +200,13 @@ namespace DatabaaseBuisnessSchool
 
         private void dataGridView1_RowHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
         {
-            Id = (int)dataGridView1.Rows[e.RowIndex].Cells[0].Value;
-            Toode_Box.Text = dataGridView1.Rows[e.RowIndex].Cells[1].Value.ToString();
-            Kogus_Box.Text = dataGridView1.Rows[e.RowIndex].Cells[2].Value.ToString();
-            Hind_Box.Text = dataGridView1.Rows[e.RowIndex].Cells[3].Value.ToString();
+            Id = (int)dataGridView1.Rows[e.RowIndex].Cells["Id"].Value;
+            Toode_Box.Text = dataGridView1.Rows[e.RowIndex].Cells["Toodenimetus"].Value.ToString();
+            Kogus_Box.Text = dataGridView1.Rows[e.RowIndex].Cells["Kogus"].Value.ToString();
+            Hind_Box.Text = dataGridView1.Rows[e.RowIndex].Cells["Hind"].Value.ToString();
             try
             {
-                pictureBox1.Image = Image.FromFile(@"..\..\Images"+ dataGridView1.Rows[e.RowIndex].Cells[4].Value.ToString());
+                pictureBox1.Image = Image.FromFile(Path.Combine(Path.GetFullPath(@"..\..\Images"), dataGridView1.Rows[e.RowIndex].Cells["Pilt"].Value.ToString()));
             }
             catch (Exception)
             {
@@ -172,6 +214,41 @@ namespace DatabaaseBuisnessSchool
                 MessageBox.Show("Pilt puudub");
             }
             Kat_Box.SelectedItem= dataGridView1.Rows[e.RowIndex].Cells[5].Value;
+        }
+
+        private void KustutaKustuta_Katbutt_Click(object sender, EventArgs e)
+        {
+            if (dataGridView1.SelectedRows.Count > 0)
+            {
+                int rowIndex = dataGridView1.SelectedRows[0].Index;
+                Id = Convert.ToInt32(dataGridView1.Rows[rowIndex].Cells["Id"].Value);
+                if (Id != 0)
+                {
+                    try
+                    {
+                        connect.Open();
+                        command = new SqlCommand("DELETE FROM Toode WHERE Id=@id", connect);
+                        command.Parameters.AddWithValue("@id", Id);
+                        int rowsAffected = command.ExecuteNonQuery();
+                        connect.Close();
+
+                        if (rowsAffected > 0)
+                        {
+                            NaitaAndmed();
+                            MessageBox.Show("Andmed tabelist Tooded on kustutatud");
+                        }
+                        else
+                        {
+                            MessageBox.Show("Rida ei leitud või midagi läks valesti.");
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+
+                        MessageBox.Show("Viga andmete kustutamisel: " + ex.Message);
+                    }
+                }
+            }
         }
 
         private void Lisa_Katbutt_Click(object sender, EventArgs e)

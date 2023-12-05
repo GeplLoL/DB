@@ -195,6 +195,7 @@
             this.KustutaKustuta_Katbutt.TabIndex = 14;
             this.KustutaKustuta_Katbutt.Text = "Kustuta";
             this.KustutaKustuta_Katbutt.UseVisualStyleBackColor = true;
+            this.KustutaKustuta_Katbutt.Click += new System.EventHandler(this.KustutaKustuta_Katbutt_Click);
             // 
             // pictureBox1
             // 
