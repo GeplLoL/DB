@@ -11,3 +11,4 @@ C:\Users\opilane\source\repos\Eduard\PythonApplication1\DatabaaseBuisnessSchool\
 C:\Users\opilane\source\repos\Eduard\PythonApplication1\DatabaaseBuisnessSchool\obj\Debug\DatabaaseBuisnessSchool.csproj.CoreCompileInputs.cache
 C:\Users\opilane\source\repos\Eduard\PythonApplication1\DatabaaseBuisnessSchool\obj\Debug\DatabaaseBuisnessSchool.exe
 C:\Users\opilane\source\repos\Eduard\PythonApplication1\DatabaaseBuisnessSchool\obj\Debug\DatabaaseBuisnessSchool.pdb
+C:\Users\opilane\source\repos\Eduard\PythonApplication1\DatabaaseBuisnessSchool\obj\Debug\DatabaaseBuisnessSchool.Form2.resources
